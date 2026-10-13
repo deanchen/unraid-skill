@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unraid"
+  short_description: "Tune Unraid power, wake activity and exclusive shares"
+  default_prompt: "Use $unraid to measure my server's power and wake activity and apply scoped optimizations."
