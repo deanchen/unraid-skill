@@ -1,4 +1,4 @@
 interface:
   display_name: "Unraid"
-  short_description: "Tune Unraid power, wake activity and exclusive shares"
-  default_prompt: "Use $unraid to measure my server's power and wake activity and apply scoped optimizations."
+  short_description: "Operate Unraid with GraphQL; diagnose host issues with SSH"
+  default_prompt: "Use $unraid to inspect my server through GraphQL and perform the requested operations, using SSH only for unsupported host diagnostics."

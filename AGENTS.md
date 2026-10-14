@@ -13,3 +13,9 @@ For skill edits, run the skill-creator validator. For shell edits, run `bash -n`
 and appropriate offline checks; live hardware verification needs task-specific
 authorization. Before publishing, inspect staged files and reachable history,
 confirm private exclusions, and verify remote visibility and contents.
+
+For GraphQL helper changes, run `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest
+discover -s scripts -p 'test_*.py'`. Tests must use synthetic credentials and
+mocked transport. Never execute lifecycle mutations as validation. Prefer the
+canonical verified HTTPS endpoint and explicit API IDs; preserve partial GraphQL
+errors, mutation authorization gates and the no-retry rule.

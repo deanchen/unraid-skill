@@ -1,6 +1,6 @@
 ---
 name: unraid
-description: Diagnose and tune Unraid server power, interrupt and wake activity, Docker storage paths, exclusive shares, VM USB controllers and PCIe power management through SSH. Use for measured Unraid efficiency work; use epyc-tuning for EPYC BIOS and firmware settings.
+description: Operate and diagnose Unraid through its HTTPS GraphQL API, preferring predefined system, array, Docker, VM and share operations. Use SSH for host diagnostics and tuning the API does not expose, including wake activity, storage paths and PCIe power management.
 ---
 
 # Unraid
@@ -12,6 +12,8 @@ from freshly verified operating state.
 
 ## Choose the relevant reference
 
+- [GraphQL API and predefined operations](references/graphql.md): HTTPS endpoint,
+  API keys, read queries, scoped mutations, compatibility and transport checks.
 - [Measurement and diagnosis](references/measurement.md): interrupts, scheduler
   wakes, context switches, RAPL, Home Assistant wall-meter history and tracing.
 - [Storage efficiency](references/storage.md): exclusive shares, FUSE bypass,
@@ -24,7 +26,13 @@ from freshly verified operating state.
 
 ## Operating approach
 
-Prefer the installation's existing trusted SSH access and keep host-key
+Prefer the trusted canonical HTTPS GraphQL endpoint for operations the installed
+API supports. Use `scripts/unraid_api.py` for the predefined operations below;
+read the GraphQL reference before using a new field or mutation. An unsupported
+schema field can justify checking the installed-version schema or another
+supported interface; authentication, permission and transport failures require
+diagnosis, not silent fallback to SSH. Use the installation's existing trusted
+SSH access only for operations not exposed by GraphQL, keeping host-key
 verification. Read the workspace AGENTS and relevant operating
 notes before changes. Inspection/research requests authorize investigation;
 tuning/apply requests authorize their scoped changes, including necessary
@@ -49,6 +57,13 @@ rollback and whether a real restart/boot was actually tested.
 
 ## Included helpers
 
+- `scripts/unraid_api.py`: dependency-free Python 3.9+ client for predefined
+  GraphQL reads and explicitly gated lifecycle mutations. Reads include
+  `system`, `array`, `containers`, `vms`, and `shares`. Set `UNRAID_URL` to the
+  trusted HTTPS origin and supply `UNRAID_API_KEY` securely; never pass keys in
+  command arguments. `--write` permits a mutation in the helper, but the user's
+  task must authorize the operation and target. No automatic retries or SSH
+  fallback. Verify state and application health after authorized changes.
 - `scripts/sample-intel-power.sh`: tested Intel-host activity/RAPL sampler.
   Requires root, Intel RAPL at `intel-rapl:0`, per-CPU idle telemetry and optional
   tracefs. Use only after verifying those prerequisites; do not apply its Intel
